@@ -1,0 +1,296 @@
+%\appendix
+\chapter{MT865 CR3000 Datalogger Program}
+\begin{lstlisting}[basicstyle=\tiny]
+'Data Collection Program for MT865C: 
+'CAN 
+'AHRS YEI 3 Space Sensor
+'GPS 18x 5Hz
+'4 Massa Sonic 300/150 UltraSound Sensor, Analog Voltage In 0V-5V
+'Custom Load Pin from Lever
+
+PipeLineMode 'Program operation mode.
+
+'------------------------------------GPS Declarations-------------------------------------
+'{
+Public NMEAStrings(4) As String *90
+Const  TimeFromUTC=-6*3600 'Central  standard time.
+Public GPS_MPH'1 knot (kt) = 1.15077945 miles per hour
+Public GPS_Altitude_Ft
+Public GPS_Data(15)
+Alias  GPS_Data( 1) =Latitude_dd				
+Alias  GPS_Data( 2) =Latitude_mm				
+Alias  GPS_Data( 3) =Longitude_dd				
+Alias  GPS_Data( 4) =Longitude_mm				
+Alias  GPS_Data( 5) =Speed_Knots 				
+Alias  GPS_Data( 6) =Course							
+Alias  GPS_Data( 7) =MagneticVariation	
+Alias  GPS_Data( 8) =FixQuality				
+Alias  GPS_Data( 9) =NmbrSatellites			
+Alias  GPS_Data(10) =Altitude_m					
+Alias  GPS_Data(11) =PPS						
+Alias  GPS_Data(12) =dt_Since_GPRMC			
+Alias  GPS_Data(13) =GPSReady
+Alias  GPS_Data(14) =MaxTimeAdjustment
+Alias  GPS_Data(15) =nTimesClkAdjust
+Public ClkSetmSec   =1e12
+'}
+
+'----------------------------------GPS Declarations End-----------------------------------
+
+'////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  
+'------------------------UltraSound and Load Pin Declarations-----------------------------
+
+ Public RideHeightIN(4)
+   Alias RideHeightIN(1) = frontLtRideHt  ': frontLtRideHt = Units in
+   Alias RideHeightIN(2) = frontRtRideHt  ': frontRtRideHt = Units in
+   Alias RideHeightIN(3) = rearRtRideHt   ': rearRtRideHt  = Units in
+   Alias RideHeightIN(4) = rearLtRideHt   ': rearLtRideHt  = Units in
+ 
+ Dim Load1  
+ Const load_mult1 = 11.285
+ Const load_offset1 = -12900
+
+'----------------------UltraSound and Load Pin Declarations End---------------------------
+
+'////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  
+'----------------------------YEI 3 Space Sensor Declarations------------------------------
+  
+'{ Build Commands to Transmit to Sensor over UART , TTL Logic Com 1
+  Public TxCmd0x60(1) As Long = &hF9606000    'Tare Orientation to be same as current filtered orientation
+  Public TxCmd0x55(1) As Long = &hF9555500    'Command for Start Streaming
+  Public TxCmd0x56(1) As Long = &hF9565600    'Stop Streaming
+'}
+  
+'{ Values to be Streamed by Sensor, ASCII CMD -->> :80,39,38,3,44,255,255,255,255\n
+  Public YEI3SpaceSensor(10)
+  Alias YEI3SpaceSensor(1) = AccelCorrX
+  Alias YEI3SpaceSensor(2) = AccelCorrY
+  Alias YEI3SpaceSensor(3) = AccelCorrZ
+  Alias YEI3SpaceSensor(4) = GyroRateCorrX
+  Alias YEI3SpaceSensor(5) = GyroRateCorrY
+  Alias YEI3SpaceSensor(6) = GyroRateCorrZ
+  Alias YEI3SpaceSensor(7) = AxisX
+  Alias YEI3SpaceSensor(8) = AxisY
+  Alias YEI3SpaceSensor(9) = AxisZ
+  Alias YEI3SpaceSensor(10) = Angle
+'  Alias YEI3SpaceSensor(11) = TempFahrenheit
+'}
+  
+'{ Variables for Serial Buffer
+  Public MemoryBlock(10) As Long
+  Public NbytesReturned
+  Dim i
+'}
+   
+'--------------------------YEI 3 Space Sensor Declarations End----------------------------
+  
+'////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+'----------------------------------SDM-CAN Declarations-----------------------------------
+'{
+'CAN chip bit timing for 250kBaud network ={4, 5, 2} for J1939 Standards
+'{
+Const SDMProp0	=0
+Const CANQuanta	=4
+Const CANSeg1		=5
+Const CANSeg2		=2
+'}
+
+'.Declaration for Proprietary Bus and SDM CAN @ address 00
+Public GetSDMCANSigsProp0 As Boolean =True
+Public SDMCANInfoProp0(2)
+Alias  SDMCANInfoProp0(1)=SDMCanSigProp0
+Alias  SDMCANInfoProp0(2)=SDMCanVerProp0
+
+Public Set_SDMCAN_OpMode_Prop0 As Boolean =True
+Public CAN_SwitchRead_Prop0, CAN_Switch_Prop0=0000
+  'SDM-CAN firmware switches, ABCD.  B=1 flags old data with NaN., D=0, List only mode..
+
+Dim    iSigs, jMode
+
+Const DataType2 = 2
+Const DataType4 = 4
+
+'Declarations for values collected off of the CAN Network
+' Proprietary Bus Messages (BUS 0)
+Public CANData(9)
+Alias CANData(1) = EngPercentLoad
+Alias CANData(2) = EngineRPM
+Alias CANData(3) = ActEngPercTorq
+'Alias CANData(4) = GroundSpeed
+Alias CANData(4) = TransOutSpeed
+Alias CANData(5) = GearNo
+Alias CANData(6) = WheelBasedSpeed
+Alias CANData(7) = SteerMotorSpeed
+Alias CANData(8) = SteerWheelPos
+Alias CANData(9) = EngFuelRate
+'}
+
+'--------------------------------SDM-CAN Declarations End---------------------------------
+
+'////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+'---------------------------------Data Table Declaration----------------------------------
+
+DataTable(MT865C_Data,storeData,-1)
+    CardOut(1,-1)
+    Sample(9,CANData,Float)
+    Sample(10,YEI3SpaceSensor,Float)
+    Sample(15,GPS_Data,Float)
+    Sample(4,RideHeightIN,Float)
+    Sample(1,Load1,Float)
+EndTable
+
+'---------------------------------Data Table Declaration End------------------------------
+  
+'////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+'--------------------------------SDM-CAN Sub-Routines ------------------------------------
+Sub SDMCAN_SigVs_Prop0()
+    iSigs=0
+    Scan(1,Sec,0,10)
+    iSigs=iSigs+1
+    SDMCAN(SDMCANInfoProp0(),SDMProp0,CANQuanta,CANSeg1,CANSeg2,0,30,0,0,0,1.0,0.0)
+      If SDMCANInfoProp0(1)=54495 AND SDMCANInfoProp0(2)=5 Then ExitScan 'SDM-CAN OS version 5.
+      NextScan
+GetSDMCANSigsProp0=False
+EndSub'MGW.
+
+
+Sub SDMCAN_OpMode_Prop0()
+    jMode=0
+    Do
+    jMode=jMode+1
+    Scan(1,Sec,0,1)
+    SDMCAN(CAN_Switch_Prop0,SDMProp0,CANQuanta,CANSeg1,CANSeg2,0,32,0,0,1,1.0,0.0)'Set SDM-CAN switches.
+    NextScan
+    Scan(1,Sec,0,1)
+    SDMCAN(CAN_SwitchRead_Prop0,SDMProp0,CANQuanta,CANSeg1,CANSeg2,0,33,0,0,1,1.0,0.0)'Read SDM-CAN switches.
+    NextScan
+    If CAN_SwitchRead_Prop0=CAN_Switch_Prop0 OR jMode>10 Then ExitDo
+    Loop
+    Set_SDMCAN_OpMode_Prop0=False
+EndSub'MGW.
+
+'--------------------------------SDM-CAN Sub-Routines End --------------------------------
+
+'////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+'------------------------------------Main Program-----------------------------------------
+
+BeginProg
+  
+'{ Set Baud Rate for Factory Default on Garmin 18x-5Hz and Open Serial Port
+ 'SerialOpen(Com3,19200,3,0,1000)
+'}
+  
+'{ Set Baud Rate (115200) and Open Serial Port (Com1) for YEI3SpaceSensor
+ SerialOpen(Com1,115200,19,0,500)    
+    'Format:19 - Binary, No Parity, 1 Stop bit, 8 data bits TTL Logic r
+'}
+  
+'{ Transmit Initialization Commands for Taring and Streaming to YEI3SpaceSensor
+ SerialOutBlock(Com1,TxCmd0x56(),3) 'Stop any streaming from another test program
+ SerialOutBlock(Com1,TxCmd0x60(),3) 'Tare Out Sensor with current orientation
+ SerialOutBlock(Com1,TxCmd0x55(),3) 'Start Streaming MAKE THIS THE LAST COMMAND BEFORE SCANNING BEGIN
+'}
+ 
+
+Scan(50,mSec,100,0)'Main sequence scan.
+    'SDM-CAN operations:
+    '{
+    
+    '.SDM-CAN initializations:
+    If GetSDMCANSigsProp0 Then SDMCAN_SigVs_Prop0()
+    If Set_SDMCAN_OpMode_Prop0 Then SDMCAN_OpMode_Prop0()  
+    
+    '.SDM-CAN Messages 
+    
+    'EEC2_Eng1: &HCF00300 dt = 0.06 sec
+    SDMCAN (EngPercentLoad ,SDMProp0,CANQuanta,CANSeg1,CANSeg2,&HCF00300,DataType2,41,8,1,1,0) 
+    'EngPercentLoadatCurrentSpeed 
+    
+    'EEC1_Eng1: &H18F00400 dt = 0.06 sec
+    SDMCAN (EngineRPM   ,SDMProp0,CANQuanta,CANSeg1,CANSeg2,&H18F00400,  DataType2,33  ,16,1,0.125,0.0 )
+    'Engine Speed in RPM - Same as TransmissionInputShaftSpeed
+    SDMCAN (ActEngPercTorq,SDMProp0,CANQuanta,CANSeg1,CANSeg2,&H18F00400,  DataType2,41,8,1,1,-125)
+    'ActualEnginePercentToruqe
+    
+    'EEC3_Eng1: &H18FEDF00
+    
+    'GBSD: &HCFE4900 , dt = 0.06 sec
+    'SDMCAN (GroundSpeed,SDMProp0,CANQuanta,CANSeg1,CANSeg2,&HCFE4900,DataType2,57,16,1,0.001,0)
+    'GroundSpeedachineSpeed
+    
+    'ETC1_MM: &HCF00203, dt = 0.06 sec
+    SDMCAN (TransOutSpeed,SDMProp0,CANQuanta,CANSeg1,CANSeg2,&HCF00203,DataType2,49,16,1,0.125,0)
+    'TransmissionOutputShaftSpeed
+    
+    'ETC2_MM: &HCF00503, dt = 0.06 sec
+    SDMCAN (GearNo,SDMProp0,CANQuanta,CANSeg1,CANSeg2,&HCF00503,DataType2,33,8,1,1,-125)
+    'TransmissionCurrentGear 
+    
+    'WBSD: &HCFE4803 , dt = 0.06 sec
+    SDMCAN (WheelBasedSpeed,SDMProp0,CANQuanta,CANSeg1,CANSeg2,&HCFE4803,DataType2,57,16,1,0.001,0)
+    'WheelBasedSpeedchineSPeed      
+    
+    '}  End of SDM-CAN operations.
+         
+    'YEI 3 Space Sensor operations:
+    '{
+     SerialInRecord(Com1,MemoryBlock(),   &h00FE,    40,0,NbytesReturned,        01)			    
+    'Parse Out 17, 4 byte floating point data values
+     For i=1 To 10
+      	   MoveBytes(YEI3SpaceSensor(i),0,MemoryBlock(),(4*i)-4,4)
+    	   Next i 
+    '} End of YEI 3 Space Sensor operations.
+      
+    If EngineRPM > 950 Then storeData = True Else storeData = False
+    'storeData = True 
+    CallTable(MT865C_Data)
+      
+NextScan'End main sequence scan.
+		
+'Slow Sequence UltraSound Ride Height Measurement at 10Hz or every 100ms
+'{
+SlowSequence
+  Scan(1000,mSec,100,0)
+    'PTCS: &HCFF1203 , dt = 0.94 sec
+     SDMCAN (SteerMotorSpeed,SDMProp0,CANQuanta,CANSeg1,CANSeg2,&HCFF1203,DataType4,57,16,1,1,0) 
+     'SteerMotorSpeed1(gives delta between left and right wheels)
+     SDMCAN (EngFuelRate,SDMProp0,CANQuanta,CANSeg1,CANSeg2,&H18FEF200,DataType2,57,16,1,0.05,0)
+     'EngFuelRate  dt = 0.1
+  NextScan
+EndSequence
+'}
+
+SlowSequence
+ Scan(350,mSec,100,0)
+   'PSCS: &HCFF1103 , dt = 0.32 sec 
+   '[8.5 = full left turn (CCW)], [49.5 = Middle (no turn)], [88.5 = full right turn (CW)]
+    SDMCAN (SteerWheelPos,SDMProp0,CANQuanta,CANSeg1,CANSeg2,&HCFF1103,DataType2,49,8,1,0.5,0)
+    'SteerWheelPosSensor1
+ NextScan
+EndSequence
+
+'Slow Sequence GPS Scan at 5Hz or every 200ms
+'{		
+SlowSequence
+  Scan(200,mSec,100,0)
+    	GPS(GPS_Data() ,Com3   ,TimeFromUTC,ClkSetmSec,NMEAStrings  )
+			GPS_MPH=Speed_Knots*1.15077945 '1.15077945 miles per hour= 1 knot 
+      GPS_Altitude_Ft=Altitude_m*3.28'3.28 feet/meter.
+      VoltDiff(frontLtRideHt,1,mV5000,9,True,0,250,0.0052,4) 'False Only Takes Measurement Once
+      VoltDiff(frontRtRideHt,1,mV5000,10,True,0,250,0.0052,4)
+      VoltDiff(rearRtRideHt,1,mV5000,11,True,0,250,0.0052,4)
+      VoltDiff(rearLtRideHt,1,mV5000,12,True,0,250,0.0052,4)
+      VoltDiff(Load1,1,mv5000,1,True,0,_60Hz,load_mult1,load_offset1)        
+  NextScan      
+EndSequence
+'}
+
+EndProg'}
+'------------------------------------Main Program End-------------------------------------
+\end{lstlisting}

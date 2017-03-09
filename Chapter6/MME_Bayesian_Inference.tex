@@ -1,0 +1,64 @@
+\section{Multiple Model Estimation and Bayesian Inference}
+\label{s:MME}
+The DTKF in the previous section provides more accurate approximations to tractor states than using raw, unfiltered measurements and gives terrain-track interaction force estimates. In this section, these time series estimates are used to estimate the terrain that the vehicle is currently operating. To do this we use a modified approach to multiple model estimation (MME) as in \cite{ray2009estimationTerrainForcesParameters}. Typical MME uses $N$ Kalman Filters each with different model parameters $\mathbf{F}$, $\mathbf{G}$, $\mathbf{H}$, $\mathbf{Q}$, $\mathbf{R}$ and initial conditions $\mathbf{x}_0^+$ and $\mathbf{P}_0^+$. The most likely estimator hypothesis is chosen using a recursive implementation of Bayes' rule where the liklihood is calculated using the measurement residual and residual covariance \cite{stengel2012optimal}. The modified approach used here will use estimates output from the DTKF and as inputs for Bayesian inference in the form of recursive Bayes' Rule. This selects the most likley of 320 different terrain hypotheses or models from a set of terrain $[i,\hspace{1mm}F_{net}]$ and $[i,\hspace{1mm}\tau_{res}]$ curves stored off-line ahead of time.
+
+Using the proposed modified MME approach requires \textit{apriori} knowledge about the terrain before operation since only a finite number of models can be considered. The \textit{apriori} knowledge assumed here will be bounds on the six dimesional terrain parmater space defined by the terrain paramter vector $\mathbf{p}$.
+\begin{equation*}
+    \mathbf{p} = \begin{bmatrix} c & \Phi & n & k_{eq} & K & S \end{bmatrix}^T
+\end{equation*}
+Discretization of the terrain parameter space is as follows
+\begin{equation*}
+    c \in [1,2,...,8]    
+\end{equation*}
+\begin{equation*}
+    \Phi \equiv 20^o
+\end{equation*}
+\begin{equation*}
+    n \equiv 1
+\end{equation*}
+\begin{equation*}
+    \frac{k_c}{b} + k_{\Phi} \equiv keq \in [100,200,...,500]    
+\end{equation*}
+\begin{equation*}
+    K \in [0.5,1.5,...,7.5]
+\end{equation*}
+\begin{equation*}
+    S \equiv \frac{60\%}{33\%}z
+\end{equation*}
+Discretization of the terrain parameter space using this approach depends on engineering judgement. The justification for the values chosen here comes from \cite{Wong2008,lyasko2010slip,lever2006solar,wong2009OffRoad}. Estimated values for Antarctic snow terrain cohesion are given in \cite{lever2012high}. Data from Wong \cite{Wong2008,wong2009OffRoad} show values slightly above and below $20^o$ for $\Phi$ and Lever estimates the range to be $15^o \leq \Phi \leq 25^o$. Furthermore, $c$ and $\Phi$ can not be uniquely estimated or defined to produce the same traction forces due to the parameterization in eq. \ref{eq:tractionForce} so there is no added benefit to discretizing both parameters and determining the liklihood of different combinations. The bekker sinkage exponent $n$ is defined to be constant as \cite{lever2006solar} estimates $n=1$ or close to this value for all Antarctic snow. $keq$ is discretized to match the variety of different sinkage conditions experienced by SPT defined by the Bekker relationship in eq. \ref{eq:sinkage}. The discretization of $K$ is larger due to its effect on the slip point at which the maximum net traction occurs referred to as the peak slip point, $i_{pk}$. In order to make sure different peak slip values can be found, a larger range between 0.5cm-7.5cm is considered. The last parameter $S$ is defined as constant due to the large amount of experimental data in \cite{lyasko2010slip} that shows consistent slip-sinkage behavior.
+
+This discretization results in the evaluation of 320 different terrain models for MME selection. The most likely model is selected recursively based on $\hat{i}$ and $\hat{\mathbf{F}} \equiv [\hat{F}_{net},\hat{\tau}_{res}]^T$ estimates from the DTKF using Bayes rule recursively
+\begin{equation}
+    \Pr(\mathbf{p}_j)_k = \Pr(\mathbf{p}_j|\hat{\mathbf{F}}_k) = \frac{pr(\hat{\mathbf{F}}_k|\mathbf{p}_j)\Pr(\mathbf{p}_j|\hat{\mathbf{F}}_{k-1})}{\sum_{i=1}^{N} pr(\hat{\mathbf{F}}_k|\mathbf{p}_i)\Pr(\mathbf{p}_i|\hat{\mathbf{F}}_{k-1})}
+\end{equation}
+where the liklihood of the terrain parameter vector given the estimated forces is calculated using a multivariate Gaussian PDF
+\begin{equation}\label{eq:liklihood}
+    pr(\hat{\mathbf{F}}_k|\mathbf{p}_j) = \frac{1}{(2\pi)^m|\mathbf{\Sigma}|^{1/2}}e^{\mathbf{r}^T(\mathbf{p}_j,\hat{i}_k) \mathbf{\Sigma}^{-1}\mathbf{r}(\mathbf{p}_j,\hat{i}_k) }
+\end{equation}
+\begin{equation}\label{eq:residual}
+    \mathbf{r}(\mathbf{p}_j,\hat{i}_k) = \mathbf{F}_k(\mathbf{p}_j,\hat{i}_k)-\hat{\mathbf{F}}_k
+\end{equation}
+where $\mathbf{r}(\mathbf{p}_j,\hat{i}_k)$ is the residual vector and $\mathbf{F}_k(\mathbf{p}_j,\hat{i}_k)$ is the vector of terrain forces mapped for parameter vector $\mathbf{p}_j$ and estimated slip $\hat{i}_k$. The estimated terrain parameter set is computed at time step $k$ by a weighted sum of the hypotheses vectors $\mathbf{p}_1$ to $\mathbf{p}_N$.
+\begin{equation}
+    \hat{\mathbf{p}}_k = \begin{bmatrix} \mathbf{p}_1 & \mathbf{p}_2 & ... & \mathbf{p}_N\end{bmatrix} \begin{bmatrix} \Pr(\mathbf{p}_1)_k \\ \Pr(\mathbf{p}_2)_k \\ \vdots \\ \Pr(\mathbf{p}_N)_k \end{bmatrix}
+\end{equation} 
+The estimated maximum value of the net traction $\hat{F}_{net}$ and the peak slip value at which it occurs $\hat{i}_{pk}$ are approximated by using the equations from section \ref{s:Terramechanics_Revisited} across a discretized mesh of slip values using a search across $[i,F_{net}]$ pairs.
+
+Careful examination of the liklihood calculation in eq. \ref{eq:liklihood} shows that an approximation to the residual vector in eq. \ref{eq:residual} is being used instead of an exact value since there is only knowledge of the slip estimate $\hat{i}_k$ instead of the true value $i_k$. The nonlinear nature of the slip-force curves can create large errors in this residual approximation even for small estimated slip errors, $e_{i,k} \equiv i_k - \hat{i}_k$, of $|e_i| \leq 3\%$. Bayes' rule will still converge to an estimate, however, the rate of convergence is much longer and less accurate. To improve the estimate, a more accurate value of $\hat{i}$ is required. To obtain this, the simplified tractor model equations for the DTKF are reexamined. 
+\begin{equation*}
+    \dot v_T = \frac{F_{net}-DB}{m_T}
+\end{equation*}
+\begin{equation*}
+    \ddot \varphi = \frac{\tau - \tau_{res}}{J_S}
+\end{equation*}
+For these two equations, the nominal parameters for tractor mass and driver inertia are $m_T = 25,000\hspace{1mm}kg$ and $J_S = 300\hspace{1mm}kg\cdot m^2$. Furthermore, the magnitudes of the forces and torques are of comparable magnitudes. The argument can be made that the time constant to a steady-state value for vehicle speed is much larger than that for driver speed. Even though the DTKF produces an accurate tractor speed estimate $\hat{v}_T$, the signal still exhibits characteristics of additative white noise which can be seen in Fig. \ref{fig:DTKF_Traj_1Tractor}. The higher frequencies from this estimate are subject to additional filtering to enhance the slip estimate $\hat{i}$ accuracy since they are likely beyond what is physically possible in the tractor dynamics. This filtered tractor speed estimate will be referred to as a smoothed velocity estiamte $\tilde v_T$. It is calculated using a first order IIR filter using a time constant of 0.25 seconds and discretized using the same techniques from section \ref{s:Velocity_and_Heading_Controllers} for a rate of 20 Hz.
+\begin{equation}
+    \frac{\tilde v_T(s)}{\hat{v}_T(s)} = \frac{1}{0.25s + 1}
+\end{equation}
+\begin{equation}
+    \tilde{v}_T[n] = 0.8187\tilde{v}_T[n-1]  + 0.1813\hat{v}_T[n]
+\end{equation}
+This smoothed velocity estimate is used to redefine the slip estimate $\hat{i}$ that is used for the Bayes MME in this section. 
+\begin{equation}
+    \hat{i} = 1 - \frac{\tilde v_T}{r\hat{\dot\varphi}}
+\end{equation}

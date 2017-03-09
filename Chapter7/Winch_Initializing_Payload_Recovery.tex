@@ -1,0 +1,28 @@
+\section{Stage 2: Initializing Payload Recovery}
+Once the winch has been activated, attempts to recover the payload begin immediately. This is due to the fact that soft terrain patch lengths are unknown to the tractor. Furthermore, recovering all the cable let out once the winch has been activated can be a timely process.
+
+Algorithm \ref{alg:WIPC} runs at 4 Hz and summarizes the logic used to initialize payload recovery once the winch control mode has been activated. Line 4 gathers the latest slip estimate $\hat{i}$ from the DTKF. Once this has been obtained, the hydraulic braking valve calculates the $P_{set}$ value based on current and past slip values. When the tractor first enters the control mode, $P_{set} = 0\hspace{1mm}psi$ and increments at levels of $incPSI = 15\hspace{1mm}psi$ in line 6. This is done until the track slip reaches $20\%$. This threshold is chosen so that if the current drawbar load is at the limits of what the tractor can handle and the slip increases, the traction control mode has a chance to maintain mobility without operating under continuous load increases. The limiting factor of performance here is that whatever terrain the tractor attempts to initialize payload recovery on must have a positive $F_{net}$ value at $i \leq 20\%$ as is with all curves in Fig. \ref{fig:Net_Traction_With_Payload_TC_Both} except the magenta one. Otherwise the current rule set will not recover the payload. It should be noted however that the magenta curve has a $K$ on the edge of the bounded terrain paramater space. 
+\begin{algorithm}[t]
+\setstretch{1.35}
+\SetAlgoLined
+\vspace{5pt}
+ $incPSI = 15\hspace{1mm}psi$\;
+ $aCoeff = 0.9$\;
+ \If{winch control mode is active and 4 way, 2 position valve is in position II}{
+  $\hat{i}\leftarrow$ last slip estimate from DTKF\;
+  \uIf{$\hat{i} \leq 20\%$}{
+   $P_{set} = P_{set} + incPSI$\;
+   }
+  \uElseIf{$ 20\% < \hat{i} \leq 35\%$}{
+  maintain current $P_{set}$\;
+  }
+  \ElseIf{$ 35\% < \hat{i} \leq 45\%$}{
+  $P_{set} = P_{set} - 200 \hspace{1mm}psi$\;
+  $incPSI = aCoeff\cdot incPSI$\;
+  }
+ }
+ \caption{Winch Initializing Payload Recovery (4 Hz)}\label{alg:WIPC}
+\end{algorithm}
+If the $P_{set}$ that has been maintained in line 8 causes the tractor to detect $\hat{i} > 35\%$, the $P_{set}$ value is significantly reduced until the drawbar load is reduced until $\hat{i} < 35\%$ in line 10. Each time $P_{set}$ is significantly reduced, $incPSI$ is reduced at a rate determined by $aCoeff$ where $incPSI \geq 5\hspace{1mm}psi$. Each time this occurs, the tractor is allowed to make another attempt to pull in the load without having to reset $P_{set} = 0\hspace{1mm}psi$ and can increase $P_{set}$ to reload the drawbar at a slower rate so that it gets closer to finding the appropriate drawbar load for the tractor. While algorithm \ref{alg:WIPC} runs at 4 Hz, $\hat{i}$ is checked at 20 Hz to make sure the tractor is not operating above $45\%$. If this occurs, the braking pressure is reset to $P_{set} = 0$ 
+
+Stage 2 is considered complete once the winch has stopped rotary motion and is no longer releasing cable length. At this point, the tractor is ready to enter stage 3 of the winch control mode to make a full recovery of the payload.

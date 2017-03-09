@@ -1,0 +1,479 @@
+\mbox{} 
+
+\nomenclature[1a]{$aCoeff$}{$incPSI$ attenuation coefficient
+    \nomunit{$2.97 \, m^2$}}
+\nomenclature[1a]{$A$}{nominal ground contact area 
+    \nomunit{$2.97 \, m^2$}}
+\nomenclature[1a]{$\mathbf{A}$}{state space plant matrix 
+    \nomunit{$ \, $}}    
+\nomenclature[1b]{$b$}{lateral center to center track distance
+    \nomunit{$2.98 \, m$}}
+\nomenclature[1b]{$\mathbf{b}$}{force vector multi-body model
+    \nomunit{$  \,  $}}
+\nomenclature[1b]{$\mathbf{B}$}{state space input matrix
+    \nomunit{$  \,  $}}    
+\nomenclature[1b]{B1}{pressure relief valve
+    \nomunit{$  \,  $}}
+\nomenclature[1b]{B2}{braking, pressure relief valve
+    \nomunit{$  \,  $}}    
+\nomenclature[1c]{$c$}{terrain cohesion
+    \nomunit{$ \, kPa$}}
+\nomenclature[1d]{$D_{LA}$}{unmanned, follower tractor look-ahead distance
+    \nomunit{$ \, m$}}
+\nomenclature[1d]{$D_{lat}$}{leader-follower way point lateral offset distance
+    \nomunit{$ \, m$}}    
+\nomenclature[1d]{$D_{long}$}{leader-follower way point longitudinal offset distance
+    \nomunit{$ \, m$}}        
+\nomenclature[1d]{$D_P$}{Hydraulic Pump Displacement
+    \nomunit{$ \, m^3/radian$}}
+\nomenclature[1d]{$D_{P,Max}$}{Maximum Hydraulic Pump Displacement
+    \nomunit{$ 120 \times 10^{-6} \,m^3/radian$}}
+\nomenclature[1d]{$D_M$}{Hydraulic Motor Displacement
+    \nomunit{$ 105 \times 10^{-6} \, m^3/radian$}}
+\nomenclature[1d]{$ D_{LA} $}{look-ahead distance
+    \nomunit{$ \, m $}}
+\nomenclature[1d]{$ DB $}{drawbar force
+    \nomunit{$ \, N $}}
+\nomenclature[1d]{$ \hat{DB} $}{estimated drawbar force
+    \nomunit{$ \, N $}}    
+\nomenclature[1f]{$\mathbf{F}$}{state space discrete time plant matrix
+    \nomunit{$ \, $}}      
+\nomenclature[1f]{$\mathbf{F}_P$}{arbitrary force vector
+    \nomunit{$ \, N$}}    
+\nomenclature[1f]{$F$}{track traction force
+    \nomunit{$ \, N$}}
+\nomenclature[1f]{$\hat{F}$}{estimated torque or force
+    \nomunit{$ \, $}}    
+\nomenclature[1f]{$\hat{\mathbf{F}}$}{estimated torque, force vector
+    \nomunit{$ \, $}} 
+\nomenclature[1f]{$F_{net,DB}$}{track net traction force accounting for drawbar load
+    \nomunit{$ \, N$}}      
+\nomenclature[1f]{$F_{net}$}{track net traction force
+    \nomunit{$ \, N$}}  
+\nomenclature[1f]{$\hat{F}_{net}$}{track estimated net traction force
+    \nomunit{$ \, N$}}    
+\nomenclature[1fl]{$F_L$}{left track traction force
+    \nomunit{$ \, N$}}
+\nomenclature[1fr]{$F_R$}{right track traction force
+    \nomunit{$ \, N$}}
+\nomenclature[1g]{$\mathbf{G}$}{state space discrete time input matrix
+    \nomunit{$ \, $}}      
+\nomenclature[1g]{$g_{GR}$}{transmission gear ratio
+    \nomunit{$  \,  $}}
+\nomenclature[1g]{$g_{FD}$}{final drive gear ratio
+    \nomunit{$  \,  $}}
+\nomenclature[1g]{$g_{ST}$}{hydraulic steering motor gear ratio
+    \nomunit{$  \,  $}}
+\nomenclature[1g]{$g_{P}$}{hydraulic steering pump gear ratio
+    \nomunit{$  \,  $}}
+\nomenclature[1h]{$h_{\rho}$}{coefficient of lateral resistance offset
+    \nomunit{$ 0.3004 \, $}}
+\nomenclature[1h]{$\mathbf{H}$}{measurement model matrix
+    \nomunit{$ \, $}}    
+\nomenclature[1h]{$\mathbf{H}$}{angular momentum
+    \nomunit{$ \, kg \cdot m^2/s $}}
+\nomenclature[1h]{$\mathbf{H_G}$}{angular momentum about body C.G.
+    \nomunit{$ \, kg \cdot m^2/s $}}
+\nomenclature[1h]{$\mathbf{H_T}$}{tractor angular momentum
+    \nomunit{$ \, kg \cdot m^2/s $}}
+\nomenclature[1h]{$\mathbf{H_{SD}}$}{sled angular momentum
+    \nomunit{$ \, kg \cdot m^2/s $}}
+\nomenclature[1h]{$\mathbf{H_L}$}{left driver angular momentum
+    \nomunit{$ \, kg \cdot m^2/s $}}
+\nomenclature[1h]{$\mathbf{H_R}$}{right driver angular momentum
+    \nomunit{$ \, kg \cdot m^2/s $}}
+\nomenclature[1i]{$ incPSI $}{$P_{set}$ pressure increment
+    \nomunit{$  \, psi $}}    
+\nomenclature[1i]{$i$}{track slip ratio
+    \nomunit{$ \, \% $}}
+\nomenclature[1i]{$\hat{i}_{pk}$}{track estimated peak slip ratio
+    \nomunit{$ \, \% $}} 
+\nomenclature[1i]{$i_{pk}$}{track peak slip ratio
+    \nomunit{$ \, \% $}}    
+\nomenclature[1i]{$i_L$}{left track slip ratio
+    \nomunit{$ \, \% $}}
+\nomenclature[1i]{$i_R$}{right track slip ratio
+    \nomunit{$ \, \% $}}
+\nomenclature[1j]{$J_W$}{winch moment of inertia 
+    \nomunit{$ 0.8915 \, kg \cdot m^2 $}}    
+\nomenclature[1j]{$J_T$}{tractor moment of inertia about the $\mathbf{k}_1$ axis
+    \nomunit{$ 1.5 \times 10^5 \, kg \cdot m^2 $}}
+\nomenclature[1j]{$J_S$}{driver and track moment of inertia about the $\mathbf{j}_1$ axis
+    \nomunit{$ 300 \, kg \cdot m^2 $}}
+\nomenclature[1j]{$J_{SD}$}{sled moment of inertia about the $\mathbf{k}_3$ axis
+    \nomunit{$ 3.98 \times 10^6 \, kg \cdot m^2 $}}
+\nomenclature[1j]{$J_{t}$}{transmission moment of inertia
+    \nomunit{$ 150 \, kg \cdot m^2 $}}
+\nomenclature[1j]{$J_{e}$}{engine moment of inertia
+    \nomunit{$ 15 \, kg \cdot m^2 $}}
+\nomenclature[1k]{$K$}{terrain shear deformation modulus
+    \nomunit{$ \, cm $}}
+\nomenclature[1l]{$ l $}{nominal track ground contact length
+    \nomunit{$ 3.25 \, m $}}
+\nomenclature[1r]{$ r $}{driver radius
+    \nomunit{$ 0.7851 \, m $}}
+\nomenclature[1r]{$ R_{lRF} $}{lateral resistance force, right track, front section
+    \nomunit{$ \, N $}}
+\nomenclature[1r]{$ R_{lRR} $}{lateral resistance force, right track, rear section
+    \nomunit{$ \, N $}}
+\nomenclature[1r]{$ R_{lLF} $}{lateral resistance force, left track, front section
+    \nomunit{$ \, N $}}
+\nomenclature[1r]{$ R_{lLR} $}{lateral resistance force, left track, rear section
+    \nomunit{$ \, N $}}
+\nomenclature[1l]{$ L_{TA} $}{tractor CG to drawbar distance
+    \nomunit{$ 0.82 \, m $}}
+\nomenclature[1l]{$ L_{A} $}{drawbar length
+    \nomunit{$ 1 \, m $}}
+\nomenclature[1l]{$L_{TS} $}{rigid truss length 
+    \nomunit{$ 6 \, m $}}
+\nomenclature[1l]{$ L_{SD} $}{sled length
+    \nomunit{$ 21 \, m $}}
+\nomenclature[1l]{$ L_{TA} $}{tractor CG to drawbar distance
+    \nomunit{$ 1 \, m $}}
+\nomenclature[1s]{$SD$}{sled
+    \nomunit{$ \, $}}
+\nomenclature[1m]{$ m_B $}{bladder mass
+    \nomunit{$ 10,000 \, kg $}}
+\nomenclature[1m]{$ m_T $}{tractor mass
+    \nomunit{$ 25,000 \, kg $}}
+\nomenclature[1m]{$ m_{SD} $}{sled mass
+    \nomunit{$ 80,000 \, kg $}}
+\nomenclature[1m]{$ m_{\rho} $}{slope coefficient of lateral resistance
+    \nomunit{$ -0.0433 \, $}}
+\nomenclature[1m]{$ \mathbf{M} $}{mass matrix
+    \nomunit{$  \,  $}}
+\nomenclature[1m]{$ \mathbf{M}_1 $}{phase 1 dynamics mass matrix multi-body winch model
+    \nomunit{$  \,  $}} 
+\nomenclature[1m]{$ \mathbf{M}_2 $}{phase 2 dynamics mass matrix multi-body winch model
+    \nomunit{$  \,  $}} 
+\nomenclature[1m]{$ \mathbf{M}_3 $}{phase 3 dynamics mass matrix multi-body winch model
+    \nomunit{$  \,  $}} 
+\nomenclature[1m]{$ \mathbf{M}_4 $}{phase 4 dynamics mass matrix multi-body winch model
+    \nomunit{$  \,  $}}     
+\nomenclature[1p]{$ P_E $}{engine power
+    \nomunit{$  \, kW $}}
+\nomenclature[1p]{$ P_{set} $}{hydraulic pressure reference
+    \nomunit{$  \, Pa $}}    
+\nomenclature[1p]{$ P_H $}{pressure in $H$ section of hose
+    \nomunit{$  \, Pa $}}
+\nomenclature[1p]{$ P_O $}{pressure in $O$ section of hose
+    \nomunit{$  \, Pa $}}    
+\nomenclature[1q]{$ q_j $}{$j^{th}$ generalized coordinate
+    \nomunit{$  \,  $}}
+\nomenclature[1q]{$ Q_j $}{$j^{th}$ generalized force
+    \nomunit{$  \,  $}}
+\nomenclature[1q]{$ Q_H $}{hydraulic fluid flow in the $H$ section of hose
+    \nomunit{$  \, m^3/s $}}
+\nomenclature[1q]{$ Q_O $}{hydraulic fluid flow in the $O$ section of hose
+    \nomunit{$  \, m^3/s $}}    
+\nomenclature[1q]{$ q_{B2} $}{flow out of braking, pressure relief valve
+    \nomunit{$  \, m^3/s $}}
+\nomenclature[1q]{$ q_{B1} $}{flow out of pressure relief valve
+    \nomunit{$  \, m^3/s $}}    
+\nomenclature[1q]{$ q_{leak} $}{leakage flow
+    \nomunit{$  \, m^3/s $}}   
+\nomenclature[1q]{$ \mathbf{Q} $}{process disturbance covariance matrix
+    \nomunit{$  \,  $}}    
+\nomenclature[1r]{$ \mathbf{R} $}{measurement noise covariance matrix
+    \nomunit{$  \,  $}}        
+\nomenclature[1r]{$ R $}{track resistance force
+    \nomunit{$  \, N $}}
+\nomenclature[1r]{$ R_L $}{longitudinal left track resistance force
+    \nomunit{$  \, N $}}
+\nomenclature[1r]{$ R_R $}{longitudinal left track resistance force
+    \nomunit{$  \, N $}}
+\nomenclature[1r]{$ R_c $}{terrain compaction resistance
+    \nomunit{$  \, N $}}
+\nomenclature[1r]{$ R_{SD} $}{sled resistance force
+    \nomunit{$  \, N $}}    
+\nomenclature[1r]{$ R_{SD,X} $}{sled resistance force in $\mathbf{i}_3$ direction
+    \nomunit{$  \, N $}}
+\nomenclature[1r]{$ R_{SD,Y} $}{sled resistance force in $\mathbf{j}_3$ direction
+    \nomunit{$  \, N $}}
+\nomenclature[1r]{$ \mathbf{R}_{A/B} $}{rotation transformation from frame B to A
+    \nomunit{$  \,  $}}
+\nomenclature[1t]{$ T $}{kinetic energy
+    \nomunit{$  \, J $}}
+\nomenclature[1t]{$ T_s $}{sample time
+    \nomunit{$  \, s $}} 
+\nomenclature[1u]{$ \mathbf{u}$}{state space input vector
+    \nomunit{$  \, m/s $}}    
+\nomenclature[1v]{$ \mathbf{v}$}{velocity
+    \nomunit{$  \, m/s $}}
+\nomenclature[1v]{$ \hat{v}_T$}{estimated velocity
+    \nomunit{$  \, m/s $}} 
+\nomenclature[1v]{$ \tilde{v}_T$}{smoothed velocity estimate
+    \nomunit{$  \, m/s $}}        
+\nomenclature[1v]{$ \mathbf{v}_G $}{velocity of body C.G.
+    \nomunit{$  \, m/s $}}
+\nomenclature[1v]{$ \mathbf{v}_{SD} $}{velocity of sled
+    \nomunit{$  \, m/s $}}
+\nomenclature[1v]{$ \mathbf{v}_T $}{velocity of tractor
+    \nomunit{$  \, m/s $}}
+\nomenclature[1v]{$ v_x $}{tractor $\mathbf{i}_1$ velocity
+    \nomunit{$  \, m/s $}}
+\nomenclature[1v]{$ v_y $}{tractor $\mathbf{j}_1$ velocity
+    \nomunit{$  \, m/s $}}
+\nomenclature[1v]{$ V_H $}{volume of $H$ section of hose
+    \nomunit{$  \, m^3 $}}
+\nomenclature[1v]{$ V_O $}{volume of $O$ section of hose
+    \nomunit{$  \, m^3 $}}    
+\nomenclature[1w]{$ W $}{normal load of track segment on terrain
+    \nomunit{$  \, N $}}
+\nomenclature[1x]{$ X $}{$\mathbf{I}$ tractor position in inertial frame
+    \nomunit{$  \, m $}}
+\nomenclature[1y]{$ Y $}{$\mathbf{J}$ tractor position in inertial frame
+    \nomunit{$  \, m $}}
+\nomenclature[1w]{$ \mathbf{w} $}{process disturbance vector
+    \nomunit{$ \, $}}    
+\nomenclature[1y]{$ \mathbf{y} $}{measurement vector
+    \nomunit{$ \, $}}    
+\nomenclature[1v]{$ \mathbf{y} $}{measurement noise vector
+    \nomunit{$ \, $}}    
+\nomenclature[1p]{$ \mathbf{p} $}{terrain parameter vector
+    \nomunit{$ \, $}}     
+\nomenclature[1p]{$ \mathbf{P}^+ $}{\textit{posteriori} state estimate covariance matrix
+    \nomunit{$ \, $}}    
+\nomenclature[1p]{$ \mathbf{P}^- $}{\textit{a priori} state estimate covariance matrix
+    \nomunit{$ \, $}}        
+\nomenclature[1x]{$ \mathbf{x} $}{state vector
+    \nomunit{$ \, $}}
+\nomenclature[1x]{$ \hat{\mathbf{x}}^- $}{\textit{a priori} state estimate
+    \nomunit{$ \, $}}    
+\nomenclature[1x]{$ \hat{\mathbf{x}}^+ $}{\textit{posteriori} state estimate
+    \nomunit{$ \, $}}    
+\nomenclature[1x]{$ \mathbf{x}_1 $}{phase 1 dynamics state vector, multi-body winch model
+    \nomunit{$ \, $}}    
+\nomenclature[1x]{$ \mathbf{x}_2 $}{phase 2 dynamics state vector, multi-body winch model
+    \nomunit{$ \, $}}    
+\nomenclature[1x]{$ \mathbf{x}_3 $}{phase 3 dynamics state vector, multi-body winch model
+    \nomunit{$ \, $}}    
+\nomenclature[1x]{$ \mathbf{x}_4 $}{phase 4 dynamics state vector, multi-body winch model
+    \nomunit{$ \, $}} 
+\nomenclature[1x]{$ \mathbf{X}_{WP} $}{array of way point $\mathbf{I}$ or east positions
+    \nomunit{$ \,m$}}
+\nomenclature[1y]{$ \mathbf{Y}_{WP} $}{array of way point $\mathbf{J}$ or north positions
+    \nomunit{$ \,m$}}
+\nomenclature[1x]{$ X_{WP} $}{way point $\mathbf{I}$ or east position
+    \nomunit{$ \,m$}}
+\nomenclature[1x]{$ X_{WP,L} $}{leader way point $\mathbf{I}$ or east position
+    \nomunit{$ \,m$}}    
+\nomenclature[1x]{$ X_{leader} $}{leader $\mathbf{I}$ or east position
+    \nomunit{$ \,m$}}    
+\nomenclature[1x]{$ X_{follower} $}{follower $\mathbf{I}$ or east position
+    \nomunit{$ \,m$}}     
+\nomenclature[1y]{$ Y_{WP} $}{way point $\mathbf{J}$ or north position
+    \nomunit{$ \,m$}}
+\nomenclature[1y]{$ Y_{leader} $}{leader $\mathbf{J}$ or north position
+    \nomunit{$ \,m$}}    
+\nomenclature[1y]{$ Y_{WP,L} $}{leader way point $\mathbf{J}$ or north position
+    \nomunit{$ \,m$}}      
+\nomenclature[1y]{$ Y_{follower} $}{follower $\mathbf{J}$ or north position
+    \nomunit{$ \,m$}}        
+\nomenclature[1x]{$ X_{WPC} $}{chosen way point $\mathbf{I}$ or east position for heading correction
+    \nomunit{$ \,m$}}
+\nomenclature[1y]{$ Y_{WPC} $}{chosen way point $\mathbf{J}$ or north position for heading correction
+    \nomunit{$ \,m$}}       
+\nomenclature[1z]{$ z_S $}{static track sinkage
+    \nomunit{$  \, m $}}
+\nomenclature[1z]{$ z_D $}{total dynamic sinkage from slip-sinkage
+    \nomunit{$  \, m $}}    
+\nomenclature[1z]{$ z $}{z transform variable
+    \nomunit{$  \, $}}
+\nomenclature[1s]{$ S $}{slip-sinkage coefficient
+    \nomunit{$  \, $}}      
+\nomenclature[2a]{$ \alpha $}{steering angle
+    \nomunit{$  \, deg $}}
+\nomenclature[2b]{$ \beta $}{hydraulic fluid bulk modulus
+    \nomunit{$ 2.79 \times 10^9  \, Pa $}}
+\nomenclature[2t]{$ \theta $}{tractor orientation in the inertial frame
+    \nomunit{$  \, rad $}}
+\nomenclature[2t]{$ \theta_{error} $}{unmanned, follower tractor heading error
+    \nomunit{$  \, rad $}}  
+\nomenclature[2t]{$ \theta_{ref} $}{unmanned, follower tractor heading reference
+    \nomunit{$  \, rad $}}
+\nomenclature[2t]{$ \theta_{follower} $}{unmanned, follower tractor heading
+    \nomunit{$  \, rad $}} 
+\nomenclature[2t]{$ \theta_{leader} $}{manned, leader tractor heading 
+    \nomunit{$  \, rad $}}     
+\nomenclature[2p]{$ \phi $}{drawbar orientation relative to frame 1
+    \nomunit{$  \, rad $}}
+\nomenclature[2p]{$ \Phi $}{terrain friction angle
+    \nomunit{$  \, rad $}}
+\nomenclature[2p]{$ \psi $}{sled orientation relative to frame 1, multi-body model
+    \nomunit{$  \, rad $}}
+\nomenclature[2p]{$ \psi $}{winch angular position, multi-body winch model
+    \nomunit{$  \, rad $}}
+\nomenclature[2v]{$ \hat{\dot{\varphi}} $}{estimated track or driver angular speed
+    \nomunit{$  \, rad/s $}} 
+\nomenclature[2v]{$ \dot{\varphi}_{ref} $}{reference track or driver angular speed
+    \nomunit{$  \, rad/s $}} 
+\nomenclature[2v]{$ \dot{\varphi}_{e} $}{track or driver angular speed error
+    \nomunit{$  \, rad/s $}}       
+\nomenclature[2v]{$ \varphi_L $}{left track or driver angular position
+    \nomunit{$  \, rad $}}
+\nomenclature[2v]{$ \varphi_R $}{right track or driver angular position
+    \nomunit{$  \, rad $}}
+\nomenclature[2r]{$ \rho $}{radius of curvature
+    \nomunit{$  \, rad $}}
+\nomenclature[2z]{$ \zeta_W $}{winch damping coefficient
+    \nomunit{$ 3 \, kg \cdot m^2/s $}}    
+\nomenclature[2z]{$ \zeta $}{track or driver damping coefficient
+    \nomunit{$ 10 \, kg \cdot m^2/s $}}
+\nomenclature[2z]{$ \zeta_t $}{transmission damping coefficient
+    \nomunit{$ 10 \, kg \cdot m^2/s $}}
+\nomenclature[2z]{$ \zeta_e $}{engine damping coefficient
+    \nomunit{$ 1 \, kg \cdot m^2/s $}}
+\nomenclature[2z]{$ \zeta $}{track or driver damping coefficient
+    \nomunit{$ 10 \, kg \cdot m^2/s $}}
+\nomenclature[2e]{$ \eta $}{sled resistance coefficient
+    \nomunit{$ 0.11 \, $}}
+\nomenclature[2m]{$ \mu_z $}{lateral resistance coefficient based on sinkage, z
+    \nomunit{$ \, $}}
+\nomenclature[2m]{$ \mu_r $}{lateral resistance coefficient based on turning radius, $\rho$
+    \nomunit{$ \, $}}    
+\nomenclature[2o]{$ \boldsymbol{\omega} $}{angular velocity
+    \nomunit{$ \, rad/s $}}
+\nomenclature[2o]{$ \boldsymbol{\omega}_L $}{left track or driver angular velocity
+    \nomunit{$ \, rad/s $}}
+\nomenclature[2o]{$ \boldsymbol{\omega}_R $}{right track or driver angular velocity
+    \nomunit{$ \, rad/s $}}
+\nomenclature[2o]{$ \omega_E $}{engine speed
+    \nomunit{$ \, rad/s $}}
+\nomenclature[2o]{$ \Omega_E $}{engine speed
+    \nomunit{$ \, RPM $}}
+\nomenclature[2t]{$ \tau_{W} $}{torque winch
+    \nomunit{$ \, N \cdot m $}}     
+\nomenclature[2t]{$ \tau_{res} $}{driver or track resistance torque
+    \nomunit{$ \, N \cdot m $}}
+\nomenclature[2t]{$ \hat{\tau}_{res} $}{estimated driver or track resistance torque
+    \nomunit{$ \, N \cdot m $}}        
+\nomenclature[2t]{$ \tau_{c} $}{torque wet friction clutch 
+    \nomunit{$ \, N \cdot m $}}    
+\nomenclature[2t]{$ \tau_{e} $}{engine torque
+    \nomunit{$ \, N \cdot m $}}    
+\nomenclature[2t]{$ \tau_{e,Max} $}{maximum available engine torque at a given engine speed
+    \nomunit{$ \, N \cdot m $}}
+\nomenclature[2t]{$ \tau_{P} $}{hydraulic pump load torque on engine
+    \nomunit{$ \, N \cdot m $}}
+\nomenclature[2t]{$ \tau_{M} $}{hydraulic motor output torque 
+    \nomunit{$ \, N \cdot m $}}
+\nomenclature[2t]{$ \tau_{L} $}{left track or drive torque
+    \nomunit{$ \, N \cdot m $}}
+\nomenclature[2t]{$ \tau_{R} $}{right track or drive torque
+    \nomunit{$ \, N \cdot m $}}
+\nomenclature[2t]{$ \tau_{t,out} $}{transmission output torque
+    \nomunit{$ \, N \cdot m $}}
+\nomenclature[2t]{$ \tau_{t,in} $}{transmission input torque
+    \nomunit{$ \, N \cdot m $}}
+\nomenclature[2p]{$ \Pi $}{normalized engine throttle command
+    \nomunit{$ \,  $}}
+\nomenclature[2p]{$ \Pi_{leader} $}{normalized, leader engine throttle command
+    \nomunit{$ \,  $}}    
+\nomenclature[2p]{$ \Pi_{follower} $}{normalized, follower engine throttle command
+    \nomunit{$ \,  $}}   
+\nomenclature[2p]{$ \Pi_{PI} $}{normalized, PI controller engine throttle command
+    \nomunit{$ \,  $}} 
+\nomenclature[2p]{$ \Pi_{PID} $}{normalized, PIDF controller engine throttle command
+    \nomunit{$ \,  $}}     
+\nomenclature[2g]{$ \Gamma $}{normalized wet friction clutch command
+    \nomunit{$ \, $}}
+\nomenclature[2g]{$ \Gamma_1 $}{phase 1 dynamics force vector multi-body winch model
+    \nomunit{$ \, $}} 
+\nomenclature[2g]{$ \Gamma_2 $}{phase 2 dynamics force vector multi-body winch model
+    \nomunit{$ \, $}} 
+\nomenclature[2g]{$ \Gamma_3 $}{phase 3 dynamics force vector multi-body winch model
+    \nomunit{$ \, $}} 
+\nomenclature[2g]{$ \Gamma_4 $}{phase 4 dynamics force vector multi-body winch model
+    \nomunit{$ \, $}}     
+\nomenclature[2o]{$ \omega_{t,in} $}{transmission rotational input shaft speed
+    \nomunit{$ \, rad/s $}}
+\nomenclature[2o]{$ \omega_{t,out} $}{transmission rotational output shaft speed
+    \nomunit{$ \, rad/s $}}
+\nomenclature[2o]{$ \omega_{P} $}{hydraulic pump angular speed
+    \nomunit{$ \, rad/s $}}     
+\nomenclature[2o]{$ \omega_{M} $}{hydraulic motor angular speed
+    \nomunit{$ \, rad/s $}}         
+\nomenclature[2g]{$ \Gamma_K $}{arbitrary torque vector
+    \nomunit{$ \, N \cdot m$}}    
+\nomenclature[1k]{$k_c$}{modulus of terrain cohesion
+    \nomunit{$ \, kPa $}}
+\nomenclature[1k]{$k_{\Phi}$}{modulus of terrain friction angle
+    \nomunit{$ \,  $}}
+\nomenclature[1k]{$k_{eq}$}{combined Bekker pressure-sinkage parameter
+    \nomunit{$ \,  $}}    
+\nomenclature[1n]{$n$}{terrain exponent of deformation
+    \nomunit{$ \, kPa $}}    
+\nomenclature[2c]{$\chi$}{engine throttle dilation
+    \nomunit{$ \, $}}
+\nomenclature[1r]{$ \mathbf{r}_{SD/T} $}{position vector from the tractor C.G. to the sled C.G.
+    \nomunit{$  \, m $}}
+\nomenclature[1r]{$ \mathbf{r}_{T/O} $}{position vector from the inertial frame origin to tractor C.G.
+    \nomunit{$  \, m $}}
+\nomenclature[1r]{$ \mathbf{r}_{P/O} $}{position vector from point O to P
+    \nomunit{$  \, m $}}
+\nomenclature[1r]{$ \mathbf{r} $}{residual vector
+    \nomunit{$  \,  $}}     
+\nomenclature[2t]{$ \tau_{f,max,d} $}{wet friction clutch maximum dynamic torque threshold
+    \nomunit{$ 1800 \, Nm $}}
+\nomenclature[2t]{$ \tau_{f,max,s} $}{wet friction clutch maximum static torque threshold
+    \nomunit{$ 1800 \, Nm $}}
+\nomenclature[2t]{$ \tau_{f,s} $}{wet friction clutch static torque
+    \nomunit{$ \, Nm $}}
+\nomenclature[2t]{$ \tau_{f,d} $}{wet friction clutch dynamic torque 
+    \nomunit{$ \, Nm $}}
+\nomenclature[2d]{$ \delta_t $}{gear shift time constant
+    \nomunit{$ 0.25 \, s $}}
+\nomenclature[2l]{$ \lambda $}{wet friction clutch viscous coefficient
+    \nomunit{$ 1 \, s^{-1} $}}
+% Leader follower Control
+\nomenclature[1v]{$ v_{ref} $}{controller reference velocity
+    \nomunit{$ \, m/s $}}
+\nomenclature[1x]{$ x_e $}{follower longitudinal offset error
+    \nomunit{$ \, m $}}
+\nomenclature[1v]{$ v_{leader} $}{leader vehicle velocity
+    \nomunit{$ \, m/s $}}
+\nomenclature[1v]{$ v_{e} $}{unmanned, follower ground speed error
+    \nomunit{$ \, m/s $}}    
+\nomenclature[1k]{$ k $}{time step number
+    \nomunit{$ \, $}}    
+\nomenclature[1k]{$ k_x $}{speed error gain 
+    \nomunit{$ \, m/s $}}
+\nomenclature[1w]{$ WP $}{way point 
+    \nomunit{$ \, $}}
+\nomenclature[1w]{$ WPC $}{chosen way point for heading correction
+    \nomunit{$ \, $}} 
+\nomenclature[1k]{$ K_{E} $}{time-varying engine gain
+    \nomunit{$ \, $}}    
+\nomenclature[1k]{$ K_{p,v} $}{proportional speed controller gain 
+    \nomunit{$ \, (m/s)^{-1} $}}
+\nomenclature[1k]{$ K_{i,v} $}{integral speed controller gain 
+    \nomunit{$ \, (m/s)^{-1} $}}
+\nomenclature[1k]{$ K_{p,\theta} $}{proportional heading controller gain 
+    \nomunit{$ \, deg/deg $}}
+\nomenclature[1k]{$ K_{i,\theta} $}{integral heading controller gain 
+    \nomunit{$ \, deg/deg $}}
+\nomenclature[1k]{$ K_{p,t} $}{proportional traction controller gain 
+    \nomunit{$ \,  $}}
+\nomenclature[1k]{$ K_{i,t} $}{integral traction controller gain 
+    \nomunit{$ \, $}}    
+\nomenclature[1k]{$ K_{d,t} $}{derivative traction controller gain 
+    \nomunit{$ \, $}}  
+\nomenclature[1t]{$ t_{f} $}{filter time constant of traction controller derivative term 
+    \nomunit{$ \, $}}         
+\nomenclature[1s]{$ s $}{laplace transform variable 
+    \nomunit{$ \,  $}}
+\nomenclature[1k]{$ K_{dc} $}{transfer function dc gain 
+    \nomunit{$ \, (m/s)^{-1} $}}
+\nomenclature[1k]{$ K_{dc} $}{transfer function dc gain 
+    \nomunit{$ \, (m/s)^{-1} $}}
+\nomenclature[2d]{$ \delta $}{transfer function time constant 
+    \nomunit{$ \, s $}}
+\nomenclature[1k]{$ \mathbf{K} $}{Kalman Filter gain
+    \nomunit{$ \, $}} 
+\nomenclature[1k]{$ \mathbf{K}_{ss} $}{fixed, steady-state Kalman Filter gain
+    \nomunit{$ \, $}}       
+\nomenclature[2s]{$ \mathbf{\Sigma} $}{liklihood covariance matrix
+    \nomunit{$ \, $}}     
+    
+\printnomenclature 

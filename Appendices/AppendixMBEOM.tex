@@ -1,0 +1,110 @@
+\appendix
+\chapter{Multi Body Dynamics Vehicle Model Equations of Motion}\label{A:MBDVMEOM}
+\vspace{-20pt}
+\begin{linenomath*}
+    \begin{equation}
+       \mathbf{M}(1,1) =  m_{SD} + m_T
+    \end{equation}
+\end{linenomath*}
+\begin{linenomath*}
+    \begin{equation}
+        \mathbf{M}(1,2) = \mathbf{M}(2,1) = 0
+    \end{equation}
+\end{linenomath*}
+\begin{linenomath*}
+    \begin{equation}
+        \mathbf{M}(1,3) = \mathbf{M}(3,1) = \frac{1}{2}m_{SD}(2L_{A}\sin(\phi) + L_{SD}\sin(\psi) + 2L_{TS}\sin(\psi))
+    \end{equation}
+\end{linenomath*}
+\begin{linenomath*}
+    \begin{equation}
+        \mathbf{M}(1,4) = \mathbf{M}(4,1) = L_{A}m_{SD}\sin(\phi)
+    \end{equation}
+\end{linenomath*}
+\begin{linenomath*}
+    \begin{equation}
+        \mathbf{M}(1,5) = \mathbf{M}(5,1) =  \frac{1}{2}m_{SD}\sin(\psi)(L_{SD} + 2L_{TS})
+    \end{equation}
+\end{linenomath*}
+\begin{linenomath*}
+    \begin{equation}
+        \mathbf{M}(2,2) = m_{SD} + m_T
+    \end{equation}
+\end{linenomath*}
+\begin{linenomath*}
+    \begin{equation}
+        \mathbf{M}(2,3) = \mathbf{3,2} = -\frac{1}{2}m_{SD}(2L_{TA} + 2L_{A}\cos(\phi) + L_{SD}\cos(\psi) + 2L_{TS}\cos(\psi))
+    \end{equation}
+\end{linenomath*}
+\begin{linenomath*}
+    \begin{equation}
+        \mathbf{M}(2,4) = \mathbf{M}(4,2) = -L_{A}m_{SD}\cos(\phi)
+    \end{equation}
+\end{linenomath*}
+\begin{linenomath*}
+    \begin{equation}
+        \mathbf{M}(2,5) = -\frac{1}{2}m_{SD}\cos(\psi)(L_{SD} + 2L_{TS})
+    \end{equation}
+\end{linenomath*}
+\begin{linenomath*}
+    \vspace{-20pt}
+    \begin{multline}
+        \mathbf{M}(3,3) = m_{SD}L_{TA}^2 + 2m_{SD}\cos(\phi)L_{TA}L_{A} + m_{SD}\cos(\psi)L_{TA}L_{SD} + 2m_{SD}\cos(\psi)L_{TA}L_{TS}\\ + m_{SD}L_{A}^2 + m_{SD}\cos(\phi - \psi)L_{A}L_{SD} + 2m_{SD}cos(\phi - \psi)L_{A}L_{TS} + \frac{1}{4}m_{SD}L_{SD}^2 + m_{SD}L_{SD}L_{TS}\\ + m_{SD}L_{TS}^2 + J_{SD} + J_T
+    \end{multline}
+\end{linenomath*}
+\begin{linenomath*}
+    \begin{equation}
+        \mathbf{M}(3,4) = \mathbf{M}(4,3) = \frac{1}{2}(L_{A}m_{SD}(2L_{A} + 2L_{TA}\cos(\phi) + L_{SD}\cos(\phi - \psi) + 2L_{TS}\cos(\phi - \psi)))
+    \end{equation}
+\end{linenomath*}
+\begin{linenomath*}
+    \vspace{-20pt}
+    \begin{multline}
+        \mathbf{M}(3,5) = \mathbf{M}(5,3) = J_{SD} + \frac{1}{4}L_{SD}^2m_{SD} + L_{TS}^2m_{SD} + L_{SD}L_{TS}m_{SD} + (L_{TA}L_{SD}m_{SD}\cos(\psi))/2\\ + L_{TA}L_{TS}m_{SD}\cos(\psi) + \frac{1}{2}L_{A}L_{SD}m_{SD}cos(\phi - \psi) + L_{A}L_{TS}m_{SD}cos(\phi - \psi)
+    \end{multline}
+\end{linenomath*}
+\begin{linenomath*}
+    \begin{equation}
+        \mathbf{M}(4,4) = L_{A}^2m_{SD}
+    \end{equation}
+\end{linenomath*}
+\begin{linenomath*}
+    \begin{equation}
+        \mathbf{M}(4,5) = \mathbf{M}(5,4) = \frac{1}{2}L_{A}m_{SD}\cos(\phi - \psi)(L_{SD} + 2L_{TS})
+    \end{equation}
+\end{linenomath*}
+\begin{linenomath*}
+    \begin{equation}
+        \mathbf{M}(5,5) = \frac{1}{4}m_{SD}L_{SD}^2 + m_{SD}L_{SD}L_{TS} + m_{SD}L_{TS}^2 + J_{SD}
+    \end{equation}
+\end{linenomath*}
+\begin{linenomath*}
+    \vspace{-20pt}
+    \begin{multline}
+        \mathbf{b}(1,1) = F_L + F_R - R_L - R_R + R_{SD,X}\cos(\psi) - R_{SD,Y}\sin(\psi) + \dot\theta m_{SD}v_y + \dot\theta m_Tv_y\\ - L_{TA}\dot\theta^2m_{SD} - \dot\phi^2L_{A}m_{SD}\cos(\phi) - \dot\theta^2L_{A}m_{SD}\cos(\phi) - \frac{1}{2}\dot\psi^2L_{SD}m_{SD}\cos(\psi)\\ - \frac{1}{2}\dot\theta^2L_{SD}m_{SD}\cos(\psi) - \dot\psi^2L_{TS}m_{SD}cos(\psi) - \dot\theta^2L_{TS}m_{SD}\cos(\psi) - 2\dot\phi\dot\theta L_{A}m_{SD}\cos(\phi)\\ - \dot\psi\dot\theta L_{SD}m_{SD}\cos(\psi) - 2\dot\psi\dot\theta L_{TS}m_{SD}\cos(\psi)
+    \end{multline}
+\end{linenomath*}
+\begin{linenomath*}
+\vspace{-20pt}
+    \begin{multline}
+        \mathbf{b}(2,1) = R_{lLF} + R_{lLR} + R_{lRF} + R_{lRR} + R_{SD,Y}\cos(\psi) + R_{SD,X}\sin(\psi)\\ - \dot\theta m_{SD}v_x - \dot\theta m_Tv_x - \dot\phi^2L_{A}m_{SD}\sin(\phi) - \dot\theta^2L_{A}m_{SD}\sin(\phi) - \frac{1}{2}\dot\psi^2L_{SD}m_{SD}\sin(\psi)\\ - \frac{1}{2}\dot\theta^2L_{SD}m_{SD}\sin(\psi) - \dot\psi^2L_{TS}m_{SD}\sin(\psi) - \dot\theta^2L_{TS}m_{SD}\sin(\psi) - 2\dot\phi\dot\theta L_{A}m_{SD}\sin(\phi)\\ - \dot\psi\dot\theta L_{SD}m_{SD}\sin(\psi) - 2\dot\psi\dot\theta L_{TS}m_{SD}\sin(\psi)
+    \end{multline}
+\end{linenomath*}
+\begin{linenomath*}
+    \vspace{-20pt}
+    \begin{multline}
+        \mathbf{b}(3,1) = \frac{1}{2}F_Rb - \frac{1}{2}F_Lb + \frac{1}{2}R_Lb - \frac{1}{2}R_Rb - \frac{1}{2}R_{SD,Y}L_{SD} - R_{SD,Y}L_{TS} + \frac{1}{4}lR_{lLF} - \frac{1}{4}lR_{lLR}\\ + \frac{1}{4}l R_{lRF} - \frac{1}{4}l R_{lRR} - R_{SD,Y}L_{A}\cos(\phi - \psi) + R_{SD,X}L_{A}\sin(\phi - \psi) - R_{SD,Y}L_{TA}\cos(\psi)\\ - R_{SD,X}L_{TA}\sin(\psi) + L_{TA}\dot\theta m_{SD}v_x + L_{TA}\dot\phi^2L_{A}m_{SD}\sin(\phi) + \frac{1}{2}L_{TA}\dot\psi^2L_{SD}m_{SD}sin(si)\\ + L_{TA}\dot\psi^2L_{TS}m_{SD}\sin(\psi) + \frac{1}{2}\dot\phi^2L_{A}L_{SD}m_{SD}sin(\phi - \psi) + \dot\phi^2L_{A}L_{TS}m_{SD}sin(\phi - \psi)\\ - \frac{1}{2}\dot\psi^2L_{A}L_{SD}m_{SD}\sin(\phi - \psi) - \dot\psi^2L_{A}L_{TS}m_{SD}\sin(\phi - \psi) + \dot\theta L_{A}m_{SD}v_x\cos(\phi)\\ + \frac{1}{2}\dot\theta L_{SD}m_{SD}v_x\cos(\psi) + \dot\theta L_{TS}m_{SD}v_x\cos(\psi) + \dot\theta L_{A}m_{SD}v_y\sin(\phi) + \frac{1}{2}\dot\theta L_{SD}m_{SD}v_y\sin(\psi)\\ + \dot\theta L_{TS} m_{SD}v_y\sin(\psi) + 2L_{TA}\dot\phi\dot\theta L_{A}m_{SD}\sin(\phi) + L_{TA}\dot\psi\dot\theta L_{SD}m_{SD}\sin(\psi) + 2L_{TA}\dot\psi\dot\theta L_{TS}m_{SD}\sin(\psi)\\ + \dot\phi\dot\theta L_{A}L_{SD}m_{SD}\sin(\phi - \psi) + 2\dot\phi\dot\theta L_{A}L_{TS}m_{SD}\sin(\phi - \psi) - \dot\psi\dot\theta L_{A}L_{SD}m_{SD}\sin(\phi - \psi)\\ - 2\dot\psi\dot\theta L_{A}L_{TS}m_{SD}\sin(\phi - \psi)
+    \end{multline}
+\end{linenomath*}
+\begin{linenomath*}
+    \vspace{-20pt}
+    \begin{multline}
+        \mathbf{b}(4,1) = -\frac{1}{2}L_{A}(2R_{SD,Y}\cos(\phi - \psi) - 2R_{SD,X}\sin(\phi - \psi) + \dot\psi^2L_{SD}m_{SD}\sin(\phi - \psi)\\ + \dot\theta^2L_{SD}m_{SD}\sin(\phi - \psi) + 2\dot\psi^2L_{TS}m_{SD}\sin(\phi - \psi) + 2\dot\theta^2L_{TS}m_{SD}\sin(\phi - \psi) - 2\dot\theta m_{SD}v_x\cos(\phi)\\ - 2\dot\theta m_{SD}v_y\sin(\phi) + 2L_{TA}\dot\theta^2m_{SD}\sin(\phi) + 2\dot\psi\dot\theta L_{SD}m_{SD}\sin(\phi - \psi) + 4\dot\psi\dot\theta L_{TS}m_{SD}\sin(\phi - \psi))
+    \end{multline}
+\end{linenomath*}
+\begin{linenomath*}
+    \vspace{-20pt}
+    \begin{multline}
+        \mathbf{b}(5,1) = \frac{1}{2}(L_{SD} + 2L_{TS})(\dot\phi^2L_{A}m_{SD}\sin(\phi - \psi) - R_{SD,Y} + \dot\theta^2L_{A}m_{SD}\sin(\phi - \psi)\\ + \dot\theta m_{SD}v_x\cos(\psi) + \dot\theta m_{SD}v_y\sin(\psi) - L_{TA}\dot\theta^2m_{SD}\sin(\psi) + 2\dot\phi\dot\theta L_{A}m_{SD}\sin(\phi - \psi))
+    \end{multline}
+\end{linenomath*}

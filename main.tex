@@ -1,0 +1,139 @@
+%---------------------------------- Main Text Declarations -----------------------
+\documentclass[12pt,american]{report}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+    \graphicspath{{Chapter1/Figures_CH1/}{Chapter2/Figures_CH2/}{Chapter3/Figures_CH3/}{Chapter4/Figures_CH4/}{Chapter5/Figures_CH5/}{Chapter6/Figures_CH6/}{Chapter7/Figures_CH7/}}
+\usepackage{geometry}
+\geometry{verbose,letterpaper,tmargin=1in,bmargin=1in,lmargin=1.5in,rmargin=1in} %% sets paper size and margins
+\usepackage{setspace}
+%\singlespacing        %% 1-spacing (default)
+%\onehalfspacing       %% 1,5-spacing
+%\doublespacing        %% 2-spacing
+
+%\pagestyle{plain}      %% select plain page style: no headers, page numbers center bottom
+
+%% uncomment the following to include headers (e.g., to keep track of draft versions). Also change pagestyle to fancyplain:
+%\rhead[\fancyplain{}{\leftmark}]%0
+%      {\fancyplain{}{Draft 04/08 -- \thepage}}
+%\cfoot[\fancyplain{Draft 04/08 -- \thepage}{}]{\fancyplain{Draft 04/08 -- \thepage}{}}
+
+%--------------------------------- Added Packages -----------------------------
+%% This allows importing of other .tex files
+\usepackage{import}
+
+%% The lineno packages adds line numbers. Start line numbering with
+%% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
+%% for the whole article with \linenumbers after \end{frontmatter}.
+%% http://tex.stackexchange.com/questions/25784/why-doesnt-lineno-number-a-paragraph-when-it-is-followed-by-an-indented-equatio
+\usepackage{lineno}
+
+% This package allows for subfigures in the same figure
+\usepackage{subcaption}
+
+%% This allows for custom column sizes for tables
+\usepackage{array}
+\usepackage{multirow}
+
+%% The amssymb package provides various useful mathematical symbols
+\usepackage{amssymb}
+\usepackage{amsmath} % [fleqn] aligns all equations left
+%\setlength{\mathindent}{0cm} % This gets rid of any indentation of equations even with alignment
+\usepackage{mathtools}
+
+
+%% Change alignment of figure
+\usepackage[export]{adjustbox}
+
+% Forces figures to appear in sections where they are placed
+\usepackage[section]{placeins}
+
+%% Commands and package for nomenclature section
+\usepackage[intoc]{nomencl}
+\makenomenclature
+\setlength{\nomlabelwidth}{1.5cm}
+% These commands allow units in the nomenclature units
+\newcommand{\nomunit}[1]{%
+    \renewcommand{\nomentryend}{\hspace*{\fill}#1}}
+% This command lessens the space between nomenclature entries    
+\renewcommand{\nomitemsep}{0pt plus 0.3ex}
+
+% multiple columns for hybrid dynamics state machine
+\usepackage{multicol}
+\newenvironment{myitemize}{%
+\setlength\columnsep{0.8in} 
+\setlength\columnwidth{6.5in}
+\setlength\linewidth{6.5in}
+\setlength\textwidth{6.5in}
+\renewcommand{\labelitemi}{}
+\renewcommand{\nomitemsep}{0pt plus 0.3ex}
+\begin{itemize}
+\setlength\itemsep{0.04cm}
+\begin{multicols}{2}
+}{%
+\end{multicols}
+\end{itemize}
+}
+
+% Add code to document
+\usepackage{listings}
+
+% Pseudo-code 
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+
+%---------------------------------- Begin Main Text ---------------------------
+\begin{document}
+
+\pagenumbering{roman}        %% roman page numbers for front matter
+
+\renewcommand\thepage{}
+\include{TitlePage}
+\newpage
+% a blank page follows the title page, this page is not numbered
+\mbox{}
+\newpage
+
+\renewcommand\thepage{\arabic{page}}
+\pagenumbering{roman}        %% roman page numbers for front matterstarting with page ii
+\setcounter{page}{2}
+
+
+\doublespacing               %% set spacing to double
+
+\include{Abstract}           
+\include{Acknowledgements}
+
+\singlespacing
+\tableofcontents             %% include TOC
+\listoftables                %% include list of tables
+\listoffigures               %% include list of figures
+\import{Nomenclature/}{Nomenclature.tex}
+\cleardoublepage             %% start new page
+\pagenumbering{arabic}       %% arabic page numbers for body of text starting with page 1
+
+\doublespacing
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\import{Chapter1/}{Chapter1.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\import{Chapter2/}{Chapter2.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\import{Chapter3/}{Chapter3.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\import{Chapter4/}{Chapter4.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 5 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\import{Chapter5/}{Chapter5.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 6 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\import{Chapter6/}{Chapter6.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 7 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\import{Chapter7/}{Chapter7.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Appendix MBEOM %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\import{Appendices/}{AppendixMBEOM}
+\import{Appendices/}{AppendixCR3000Program}
+
+\singlespacing
+\addcontentsline{TOC}{chapter}{Bibliography}  %% include bibliography in the TOC
+\bibliographystyle{unsrt}   %% specify bibliography style (requires IEEEtran.bst somewhere TeX can find it)
+\bibliography{Thesis.bib}	% expects file "myrefs.bib"
+
+\end{document}
